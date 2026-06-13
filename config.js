@@ -375,11 +375,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // ==================== 7. 吹更计数器 ====================
     function initChuigengCounter() {
         const totalEl = document.getElementById('chuigengTotal');
+        const titleEl = document.getElementById('chuigengVideoTitle');
         const updateEl = document.getElementById('chuigengUpdate');
         const progressEl = document.getElementById('chuigengProgress');
+        const btnEl = document.getElementById('chuigengBtn');
 
         if (!totalEl) return;
 
+        // 数字动画
         function animateNumber(el, target) {
             let current = 0;
             const step = Math.max(1, Math.floor(target / 40));
@@ -393,27 +396,84 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 30);
         }
 
-        fetch('chuigeng.json?t=' + Date.now())
-            .then(r => r.json())
-            .then(data => {
-                const total = data.total || 0;
-                animateNumber(totalEl, total);
+        // 加载数据
+        function loadData() {
+            fetch('/api/chuigeng?t=' + Date.now())
+                .then(r => r.json())
+                .then(data => {
+                    if (data.error) {
+                        console.warn('吹更 API 错误:', data.error);
+                        totalEl.textContent = '?';
+                        if (titleEl) titleEl.textContent = '数据加载失败';
+                        return;
+                    }
+                    const total = data.total || 0;
+                    animateNumber(totalEl, total);
 
-                if (data.last_update) {
-                    updateEl.textContent = '更新于: ' + data.last_update;
-                }
+                    // 显示最新视频标题
+                    if (titleEl) {
+                        if (data.latest_video && data.latest_video.title) {
+                            titleEl.textContent = '📹 ' + data.latest_video.title;
+                            if (data.latest_video.bvid) {
+                                titleEl.onclick = () => {
+                                    window.open('https://www.bilibili.com/video/' + data.latest_video.bvid, '_blank');
+                                };
+                                titleEl.style.cursor = 'pointer';
+                            }
+                        } else {
+                            titleEl.textContent = '暂无视频信息';
+                        }
+                    }
 
-                // 进度条动画（满 100 为满，超过则按比例）
-                const progress = Math.min(100, (total / 100) * 100);
-                setTimeout(() => {
-                    progressEl.style.width = progress + '%';
-                }, 300);
-            })
-            .catch(err => {
-                console.warn('吹更数据加载失败:', err);
-                totalEl.textContent = '?';
-                updateEl.textContent = '数据加载失败';
+                    // 更新时间
+                    if (data.last_update) {
+                        updateEl.textContent = '更新于: ' + data.last_update;
+                    }
+
+                    // 进度条
+                    const progress = Math.min(100, total > 0 ? (total / Math.max(total, 100)) * 100 : 0);
+                    setTimeout(() => {
+                        progressEl.style.width = progress + '%';
+                    }, 300);
+                })
+                .catch(err => {
+                    console.warn('吹更数据加载失败:', err);
+                    totalEl.textContent = '?';
+                    if (titleEl) titleEl.textContent = '数据加载失败，请检查 API';
+                });
+        }
+
+        loadData();
+
+        // 按钮点击 → 吹更 +1
+        if (btnEl) {
+            btnEl.addEventListener('click', () => {
+                btnEl.disabled = true;
+                btnEl.textContent = '⏳ 吹更中...';
+                fetch('/api/chuigeng', { method: 'POST' })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.error) {
+                            btnEl.textContent = '❌ ' + data.error;
+                            btnEl.disabled = false;
+                            return;
+                        }
+                        animateNumber(totalEl, data.total || 0);
+                        btnEl.textContent = '✅ 已吹更!';
+                        if (data.last_update) {
+                            updateEl.textContent = '更新于: ' + data.last_update;
+                        }
+                        setTimeout(() => {
+                            btnEl.textContent = '🔥 我要吹更';
+                            btnEl.disabled = false;
+                        }, 2000);
+                    })
+                    .catch(() => {
+                        btnEl.textContent = '❌ 失败，请重试';
+                        btnEl.disabled = false;
+                    });
             });
+        }
     }
 
     // ==================== 8. 页脚功能 ====================

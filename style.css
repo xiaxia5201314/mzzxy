@@ -950,3 +950,53 @@ body.light-mode .chuigeng-progress {
 body.light-mode .chuigeng-tip {
     color: var(--text-light);
 }
+
+/* 视频标题 */
+.chuigeng-video-title {
+    font-size: 14px;
+    color: var(--primary-color);
+    margin-bottom: 16px;
+    opacity: 0.9;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+body.light-mode .chuigeng-video-title {
+    color: var(--primary-color);
+}
+.chuigeng-video-title:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* 吹更按钮 */
+.chuigeng-btn {
+    margin: 16px auto 12px;
+    padding: 10px 32px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6b6b, #ffa500);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: block;
+    letter-spacing: 1px;
+}
+.chuigeng-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+}
+.chuigeng-btn:active {
+    transform: scale(0.98);
+}
+.chuigeng-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
