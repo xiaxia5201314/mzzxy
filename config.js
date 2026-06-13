@@ -375,7 +375,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // ==================== 7. 吹更计数器 ====================
     function initChuigengCounter() {
         const totalEl = document.getElementById('chuigengTotal');
-        const videoEl = document.getElementById('chuigengVideo');
         const updateEl = document.getElementById('chuigengUpdate');
         const progressEl = document.getElementById('chuigengProgress');
 
@@ -400,16 +399,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const total = data.total || 0;
                 animateNumber(totalEl, total);
 
-                if (data.latest_video && data.latest_video.title) {
-                    videoEl.textContent = '最新视频: ' + data.latest_video.title;
-                    videoEl.onclick = () => {
-                        if (data.latest_video.bvid) {
-                            window.open('https://www.bilibili.com/video/' + data.latest_video.bvid, '_blank');
-                        }
-                    };
-                    videoEl.style.cursor = 'pointer';
-                }
-
                 if (data.last_update) {
                     updateEl.textContent = '更新于: ' + data.last_update;
                 }
@@ -423,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(err => {
                 console.warn('吹更数据加载失败:', err);
                 totalEl.textContent = '?';
-                videoEl.textContent = '数据加载失败，请检查 chuigeng.json';
+                updateEl.textContent = '数据加载失败';
             });
     }
 
