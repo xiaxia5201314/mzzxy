@@ -810,7 +810,9 @@ body.light-mode .modal-content {
 .chuigeng-section {
     padding: 60px 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
 }
 
 .chuigeng-card {
