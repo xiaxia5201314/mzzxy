@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美滋滋小院</title>
+    <meta name="keywords" content="美滋滋小院,视频分享,小院日常">
+    <meta name="description" content="美滋滋小院专属网页，8090向往的生活、东北农村小院">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 模式切换 + 背景音乐按钮 -->
+    <div class="mode-switcher">
+        <button class="mode-btn active" id="darkModeBtn" title="黑夜模式">🌙</button>
+        <button class="mode-btn" id="lightModeBtn" title="白天模式">☀️</button>
+        <button class="mode-btn music-btn" id="bgMusicBtn" title="播放/停止背景音乐">🎵</button>
+    </div>
+
+    <!-- 公告栏 -->
+    <div class="announcement" id="announcement">
+        <div class="announcement-wrap">
+            <div class="announcement-content">
+                <div class="announcement-icon">📢</div>
+                <div class="announcement-text-wrap">
+                    <div class="announcement-title">重要公告</div>
+                    <div class="announcement-text">谢谢关注美滋滋小院，也祝愿你的生活能一直美滋滋<span> 小院暂不对外开放，感谢各位好兄弟的热情、投喂请加大鸽v MZZXY01 ,加群请加小斌v MZZXYBIN</span>，咱咱挖看奈！</div>
+                </div>
+            </div>
+            <button class="announcement-close" id="announcementClose">×</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 轮播图 -->
+        <section class="carousel-section">
+            <div class="carousel" id="carousel">
+                <div class="carousel-item active">
+                    <img src="lb/xy.png" alt="美滋滋小院轮播图1">
+                </div>
+                <div class="carousel-item">
+                    <img src="lb/xy.png" alt="美滋滋小院轮播图2">
+                </div>
+                <div class="carousel-item">
+                    <img src="lb/xy.png" alt="美滋滋小院轮播图3">
+                </div>
+            </div>
+            <button class="carousel-btn prev-btn" id="carouselPrev">←</button>
+            <button class="carousel-btn next-btn" id="carouselNext">→</button>
+            <div class="carousel-indicators" id="carouselIndicators">
+                <div class="indicator active" data-index="0"></div>
+                <div class="indicator" data-index="1"></div>
+                <div class="indicator" data-index="2"></div>
+            </div>
+        </section>
+
+        <!-- 吹更计数器 -->
+        <section class="chuigeng-section">
+            <h2 class="section-title">🔥 吹更排行榜</h2>
+            <div class="chuigeng-card">
+                <div class="chuigeng-number" id="chuigengTotal">0</div>
+                <div class="chuigeng-label">条"吹更"评论</div>
+                <div class="chuigeng-video" id="chuigengVideo">加载中...</div>
+                <div class="chuigeng-update" id="chuigengUpdate"></div>
+                <div class="chuigeng-progress">
+                    <div class="chuigeng-progress-fill" id="chuigengProgress"></div>
+                </div>
+                <div class="chuigeng-tip">每 2 小时自动更新一次</div>
+            </div>
+        </section>
+
+        <!-- 图片卡片区 -->
+        <section class="photos-section">
+            <h2 class="section-title">美滋滋小院六兄弟</h2>
+            <div class="photos-grid">
+                <div class="photo-card" data-video="https://player.bilibili.com/player.html?bvid=BV1hpcLz2EQf&autoplay=0&high_quality=1&danmaku=0">
+                    <img src="xd/1.png" alt="斌">
+                </div>
+                <div class="photo-card" data-video="https://player.bilibili.com/player.html?bvid=BV1hpcLz2EQf&autoplay=0&high_quality=1&danmaku=0">
+                    <img src="xd/2.png" alt="大鸽">
+                </div>
+                <div class="photo-card" data-video="https://player.bilibili.com/player.html?bvid=BV1hpcLz2EQf&autoplay=0&high_quality=1&danmaku=0">
+                    <img src="xd/3.png" alt="亮导">
+                </div>
+                <div class="photo-card" data-video="https://player.bilibili.com/player.html?bvid=BV1hpcLz2EQf&autoplay=0&high_quality=1&danmaku=0">
+                    <img src="xd/4.png" alt="五哥">
+                </div>
+                <div class="photo-card" data-video="https://player.bilibili.com/player.html?bvid=BV1hpcLz2EQf&autoplay=0&high_quality=1&danmaku=0">
+                    <img src="xd/5.png" alt="欣哥">
+                </div>
+                <div class="photo-card" data-video="https://player.bilibili.com/player.html?bvid=BV1hpcLz2EQf&autoplay=0&high_quality=1&danmaku=0">
+                    <img src="xd/6.png" alt="小泽">
+                </div>
+            </div>
+
+            <h2 class="spring-title center-title">小院春晚</h2>
+            <div class="spring-grid">
+                <div class="photo-card" data-video="https://player.bilibili.com/player.html?bvid=BV1HUFWetE7A&autoplay=0&high_quality=1&danmaku=0">
+                    <img src="12sx/20250128.png" alt="20250128蛇年">
+                </div>
+                <div class="photo-card" data-video="https://player.bilibili.com/player.html?bvid=BV1HUFWetE7A&autoplay=0&high_quality=1&danmaku=0">
+                    <img src="12sx/20250116.png" alt="20250116马年">
+                </div>
+            </div>
+        </section>
+
+        <!-- 视频播放区 -->
+        <section class="video-section">
+            <h2 class="section-title">视频播放</h2>
+            <div class="video-container" id="videoContainer">
+                <!-- 默认封面图 - 固定显示xd/6xd.png -->
+                <img src="xd/6xd.png" alt="小院封面" class="video-cover" id="videoCover" style="display: block; opacity: 1;">
+                <!-- B站视频iframe -->
+                <iframe id="videoIframe" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <!-- 音乐播放器 -->
+        <section class="audio-player-section">
+            <h2 class="section-title">音乐播放器</h2>
+            <div class="audio-player" id="audioPlayer">
+                <div class="audio-playlist" id="audioPlaylist"></div>
+                <div class="audio-controls">
+                    <button class="audio-btn" id="prevTrack">◀◀</button>
+                    <button class="audio-btn play-btn" id="playPause">▶</button>
+                    <button class="audio-btn" id="nextTrack">▶▶</button>
+                    
+                    <div class="progress-container">
+                        <div class="time-display">
+                            <span id="currentTime">00:00</span>
+                            <span id="totalTime">00:00</span>
+                        </div>
+                        <div class="progress-bar" id="progressBar">
+                            <div class="progress-fill" id="progressFill"></div>
+                            <div class="progress-handle" id="progressHandle"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="volume-control">
+                        <span id="volumeIcon">🔊</span>
+                        <div class="volume-slider" id="volumeSlider">
+                            <div class="volume-fill" id="volumeFill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-wrap">
+            <div class="footer-info">
+                <div class="footer-title">美滋滋小院</div>
+                <div class="footer-desc">美滋滋小院 | 2026 版权所有</div>
+            </div>
+            <div class="footer-actions">
+                <div class="status">当前状态：<span>正常</span></div>
+                <button class="author-btn" id="authorBtn">网页作者</button>
+                <div class="back-to-top" id="backToTop">↑</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 作者弹窗 -->
+    <div class="modal" id="authorModal">
+        <div class="modal-content">
+            <p>此界面由AI开发 构思:杨爽 部分效果功能想法:小院粉丝提供</p>
+            <button class="modal-close" id="modalClose">关闭</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+</body>
+</html>
