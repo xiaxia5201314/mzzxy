@@ -159,7 +159,8 @@ def get_latest_bvid():
         except Exception:
             pass
 
-    raise Exception("所有策略均失败，无法获取最新视频 BV 号")
+    print("  ⚠ 所有策略均失败，无法获取最新视频 BV 号")
+    return None, None
 
 
 # ========== 评论采集 ==========
@@ -266,18 +267,25 @@ def main():
     print("=" * 52)
 
     # 1. 获取 BV 号
+    bvid, title, aid, total = None, None, 0, 0
     if manual_bvid:
         bvid = manual_bvid
         print(f"\n[手动模式] BV 号: {bvid}")
-        aid, title = bvid_to_aid(bvid)
+        try:
+            aid, title = bvid_to_aid(bvid)
+        except Exception as e:
+            print(f"  获取视频信息失败: {e}")
+            bvid = None
     else:
         bvid, title = get_latest_bvid()
-        print(f"  ✓ BV 号: {bvid}")
-        aid, _ = bvid_to_aid(bvid)
-        title = _ or title
-
-    print(f"  视频: {title}")
-    print(f"  AID: {aid}")
+        if bvid:
+            print(f"  ✓ BV 号: {bvid}")
+            try:
+                aid, _ = bvid_to_aid(bvid)
+                title = _ or title
+            except Exception as e:
+                print(f"  获取视频信息失败: {e}")
+                bvid = None
 
     # 2. 读取历史数据
     old_total = 0
@@ -288,15 +296,23 @@ def main():
                 old = json.load(f)
                 old_total = old.get("total", 0)
                 old_bvid = old.get("latest_video", {}).get("bvid", "")
+                # 如果获取失败，使用缓存
+                if not bvid:
+                    bvid = old_bvid
+                    title = old.get("latest_video", {}).get("title", title or "未知视频")
+                    aid = old.get("latest_video", {}).get("aid", 0)
+                    total = old_total
+                    print(f"\n[2/3] API 获取失败，使用缓存数据")
+                    print(f"  累计吹更数: {total}")
         except Exception:
             pass
 
     # 3. 统计评论
-    if bvid == old_bvid and old_total > 0 and not manual_bvid:
+    if bvid and bvid == old_bvid and old_total > 0 and not manual_bvid:
         print(f"\n[2/3] 视频未更新，使用历史数据")
         total = old_total
         print(f"  累计吹更数: {total}")
-    else:
+    elif bvid and (bvid != old_bvid or manual_bvid):
         if bvid != old_bvid:
             print(f"\n[2/3] ⚡ 检测到新视频!")
             print(f"  旧: {old_bvid} → 新: {bvid}")
@@ -304,6 +320,10 @@ def main():
         new_count = count_comments_keyword(aid, COMMENT_KEYWORD)
         total = new_count
         print(f"  统计结果: {new_count}")
+    elif not bvid:
+        print(f"\n[2/3] ⚠ 无法获取视频信息，写入空数据")
+        bvid = ""
+        title = title or "未知视频"
 
     # 4. 写入 JSON（北京时间 UTC+8）
     now = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
